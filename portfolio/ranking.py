@@ -3,12 +3,12 @@ import numpy as np
 import sys
 import os
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from data.fetch_universe import fetch_stock_data, get_closing_prices, NIFTY_TICKERS, SP500_TICKERS
-from signals.momentum import calculate_price_momentum
-from signals.volume import calculate_volume_momentum, get_volume_tables
-from signals.volatility import calculate_volatility_score
+import data.fetch_universe
+import signals.momentum
+import signals.volume
+import signals.volatility
 
 # How much weight each signal gets
 WEIGHTS = {
@@ -43,9 +43,9 @@ def calculate_composite_score(price_table, volume_table):
     """
 
     # Calculate raw signals
-    momentum_scores = calculate_price_momentum(price_table)
-    volume_scores = calculate_volume_momentum(volume_table)
-    volatility_scores = calculate_volatility_score(price_table)
+    momentum_scores = signals.momentum.calculate_price_momentum(price_table)
+    volume_scores = signals.volume.calculate_volume_momentum(volume_table)
+    volatility_scores = signals.volatility.calculate_volatility_score(price_table)
 
     # Normalize all to 0-1 scale using percentile ranks
     momentum_norm = normalize(momentum_scores)
@@ -86,9 +86,9 @@ if __name__ == "__main__":
     print("=" * 60)
 
     print("\nFetching Nifty 50 universe...")
-    nifty_data = fetch_stock_data(NIFTY_TICKERS)
-    nifty_prices = get_closing_prices(nifty_data)
-    nifty_volumes = get_volume_tables(nifty_data)
+    nifty_data = data.fetch_universe.fetch_stock_data(data.fetch_universe.NIFTY_TICKERS)
+    nifty_prices = data.fetch_universe.get_closing_prices(nifty_data)
+    nifty_volumes = signals.volume.get_volume_tables(nifty_data)
 
     print("\nCalculating composite scores...")
     nifty_composite = calculate_composite_score(nifty_prices, nifty_volumes)
@@ -103,9 +103,9 @@ if __name__ == "__main__":
         print(f"  {i + 1}. {ticker:<20} Composite: {score:.4f}")
 
     print("\nFetching S&P 500 universe...")
-    sp500_data = fetch_stock_data(SP500_TICKERS)
-    sp500_prices = get_closing_prices(sp500_data)
-    sp500_volumes = get_volume_tables(sp500_data)
+    sp500_data = data.fetch_universe.fetch_stock_data(data.fetch_universe.SP500_TICKERS)
+    sp500_prices = data.fetch_universe.get_closing_prices(sp500_data)
+    sp500_volumes = signals.volume.get_volume_tables(sp500_data)
 
     print("\nCalculating composite scores...")
     sp500_composite = calculate_composite_score(sp500_prices, sp500_volumes)
