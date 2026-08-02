@@ -4,7 +4,7 @@ name: Shivalik Capital — Daily Live Tracker
 # Also allows manual trigger from GitHub Actions tab
 on:
   schedule:
-    - cron: '30 21 * * *'
+    - cron: '30 21 * * 1-5' # 9:30 PM UTC (Mon-Fri) = 3:00 AM IST (Tue-Sat)
   workflow_dispatch:
 
 permissions:
