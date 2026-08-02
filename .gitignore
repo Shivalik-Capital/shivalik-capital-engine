@@ -3,3 +3,4 @@ __pycache__/
 .idea/
 *.pyc
 backtest/live_tracker.log
+.DS_Store
