@@ -10,7 +10,7 @@ import signals.momentum
 import signals.volume
 import signals.volatility
 
-# How much weight each signal gets
+# Signal weights for composite score
 WEIGHTS = {
     "momentum": 0.50,
     "volume": 0.30,
@@ -20,26 +20,16 @@ WEIGHTS = {
 
 def normalize(df):
     """
-    Normalizes scores so they're all on the same scale (0 to 1).
-    Without this, a momentum score of 5.0 would dwarf a volatility score of 1.2
-    even if both signals are equally strong.
-
-    We use rank-based normalization — each stock gets a percentile rank.
-    Rank 1.0 = best, 0.0 = worst
+    Rank-based normalization to [0, 1] percentile scale.
+    Ensures signals with different magnitudes are comparable.
     """
     return df.rank(axis=1, pct=True)
 
 
 def calculate_composite_score(price_table, volume_table):
     """
-    Combines all three signals into one composite score per stock per month.
-
-    Steps:
-    1. Calculate each signal
-    2. Normalize them to same scale
-    3. Weight and combine
-
-    Returns a dataframe of composite scores
+    Combines momentum, volume, and volatility signals into a single
+    weighted composite score per stock per month.
     """
 
     # Calculate raw signals
@@ -71,10 +61,7 @@ def calculate_composite_score(price_table, volume_table):
 
 
 def get_top_stocks(composite_scores, top_n=10):
-    """
-    Returns the top N stocks by composite score for the most recent month.
-    This is our portfolio for the next month.
-    """
+    """Returns top N stocks by composite score for the most recent month."""
     latest_scores = composite_scores.iloc[-1].dropna()
     top_stocks = latest_scores.sort_values(ascending=False).head(top_n)
     return top_stocks

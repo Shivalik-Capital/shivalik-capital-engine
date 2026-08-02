@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+.idea/
+*.pyc
+backtest/live_tracker.log
