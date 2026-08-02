@@ -31,7 +31,7 @@ jobs:
 
       - name: Commit updated tracking data
         run: |
-          git config user.name "Shivalik-capital"
+          git config user.name "Soren"
           git config user.email "sorendatta7@gmail.com"
           git add backtest/live_tracking.json
           # Only commit if there are actual changes
