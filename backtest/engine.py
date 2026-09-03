@@ -101,7 +101,7 @@ def run_backtest_for_market(market_name, start_date, end_date):
     tickers = get_all_unique_tickers(market_name, start_date, end_date)
     
     print(f"2. Fetching price and volume data for {len(tickers)} stocks...")
-    stock_data = fetch_stock_data(tickers, period="5y", interval="1mo")
+    stock_data = fetch_stock_data(tickers, period="10y", interval="1mo")
     prices = get_closing_prices(stock_data)
     volumes = get_volume_tables(stock_data)
     
