@@ -2191,5 +2191,12 @@
       "LLY": 1157.0799560546875,
       "GOOGL": 344.0799865722656
     }
+  },
+  {
+    "date": "2026-10-02",
+    "nifty_portfolio": {},
+    "nifty_prices": {},
+    "sp500_portfolio": {},
+    "sp500_prices": {}
   }
 ]
